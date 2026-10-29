@@ -60,3 +60,4 @@ Content Engine Pro includes a built-in **14-Day Offline Grace Period** (`GRACE_P
 
 ### Can I run Content Engine Pro on local development environments (e.g., LocalWP, XAMPP)?
 **Yes.** The plugin functions normally on local hosts, connecting to cloud AI providers or self-hosted local models running in Ollama on `localhost:11434`.
+

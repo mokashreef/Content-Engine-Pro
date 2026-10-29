@@ -52,3 +52,4 @@ php tests/run-all-tests.php
 * **Direct Access Defense**: Every PHP file verifies `defined('WPINC') || defined('ABSPATH')` or terminates execution.
 * **Database Queries**: Raw SQL queries are prohibited. Every dynamic query must pass through `$wpdb->prepare()`.
 * **AJAX & Nonce Handling**: AJAX endpoints verify nonce validity and user capabilities via `CTA_CE_Security::verify_admin()`.
+

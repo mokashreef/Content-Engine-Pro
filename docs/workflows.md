@@ -171,3 +171,4 @@ Permits customers to move their single-site commercial license between domains:
    * Navigate to **Content Engine** -> **License**.
    * Enter the same commercial license key and click **Activate License**.
    * The licensing server binds the key to `site-b.com`, unlocking full Pro automations immediately.
+

@@ -188,3 +188,4 @@ Manage your Pro subscription:
 
 * **Event Logs (`cta-ce-logs`)**: Real-time audit log of all generations, API calls, HTTP status codes, token usage, and errors. All API keys and authorization tokens are automatically redacted.
 * **About & Diagnostics (`cta-ce-about`)**: Displays server environment metrics (PHP version, MySQL version, active extensions, memory limit, max execution time, and cron status).
+

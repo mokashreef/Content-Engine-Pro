@@ -40,3 +40,4 @@ body:
       description: "How would this benefit WordPress publishers, agencies, or educators using Content Engine Pro?"
     validations:
       required: false
+

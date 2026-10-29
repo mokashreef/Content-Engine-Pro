@@ -37,3 +37,4 @@ If you discover a suspected security vulnerability in Content Engine Pro, please
 * **Triage & Assessment**: Technical assessment and validation within **5 business days**.
 * **Remediation & Patch**: Coordination of a verified security patch and release advisory.
 * **Credit & Recognition**: Responsible security researchers will be acknowledged in release notes upon publication of the fix (unless anonymity is requested).
+

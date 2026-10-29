@@ -270,3 +270,4 @@ Content Engine Pro is a commercial proprietary product published by **Code Elta6
 Where required for compatibility with the WordPress platform, PHP code interacting directly with WordPress core APIs respects GNU General Public License (GPL) v2 or later obligations as stated in the plugin header. Commercial licensing keys, hosted licensing infrastructure, update delivery services, proprietary branding, trademarks, and premium support are proprietary commercial services operated by Code Elta6ur.
 
 For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [docs/licensing-and-usage.md](docs/licensing-and-usage.md).
+

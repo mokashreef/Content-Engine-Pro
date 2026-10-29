@@ -86,3 +86,4 @@ This guide outlines common diagnostic scenarios, error codes, and safe resolutio
 ### Symptom: FAQ Schema Does Not Appear on Frontend
 * **Cause 1**: An external SEO plugin (e.g., Yoast or Rank Math) is overriding schema output.
 * **Resolution**: Verify that the generated post has FAQ data in the post editor. When a third-party SEO plugin is active, Content Engine Pro populates their respective custom fields. When no SEO plugin is active, it outputs JSON-LD directly into `wp_head`.
+

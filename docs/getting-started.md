@@ -84,3 +84,4 @@ To put your content strategy on autopilot:
 5. Review the generated lesson list. You can edit lesson titles, change lesson order, or add custom notes to specific lessons.
 6. Click **Approve Course and Enqueue Lessons**.
 7. The engine schedules each lesson with progressive context awareness, ensuring lessons reference concepts introduced in earlier lessons.
+

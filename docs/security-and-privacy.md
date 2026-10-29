@@ -68,3 +68,4 @@ If you discover a potential security vulnerability in Content Engine Pro, please
 * **Encryption**: PGP keys are available upon request.
 * **Scope**: Please include detailed reproduction steps, proof-of-concept code, and your environment specifications (WordPress version, PHP version).
 * **Policy**: We acknowledge vulnerability reports within 48 hours and coordinate fixes prior to public disclosure. Please do not report security vulnerabilities in public GitHub issues.
+

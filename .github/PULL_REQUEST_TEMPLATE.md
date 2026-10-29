@@ -16,3 +16,4 @@ Fixes / Closes #(issue)
 - [ ] My changes do not expose any API keys, license keys, or sensitive credentials.
 - [ ] All automated unit tests continue to pass (`php tests/run-all-tests.php`).
 - [ ] Code adheres to WordPress Coding Standards (WPCS).
+

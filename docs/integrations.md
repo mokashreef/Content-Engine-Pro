@@ -106,3 +106,4 @@ To prevent misunderstandings, the following capabilities are explicitly document
 * **External Image Generators**: An option exists in general settings (`enable_image_generation`), but image generation APIs (e.g., DALL-E, Midjourney, Stable Diffusion) are disabled and not connected in version 2.0.0.
 * **Social Media Auto-Sharing**: The plugin does not post directly to Facebook, Twitter/X, or LinkedIn.
 * **Third-Party SaaS Middlemen**: No generation data passes through any intermediate proprietary SaaS servers.
+

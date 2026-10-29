@@ -89,3 +89,4 @@ Content Engine Pro enforces a strict **Zero Data Lock-In** policy:
 3. In your WordPress admin, navigate to **Content Engine** -> **License**.
 4. Paste your license key and click **Activate License**.
 5. All Pro features, unlimited generation quotas, and background cron processing unlock instantly.
+

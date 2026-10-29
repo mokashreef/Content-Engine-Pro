@@ -143,3 +143,4 @@ The scheduling architecture protects web server performance through asynchronous
   * All log entries scrub HTTP `Bearer` tokens and `api_key=` parameters before inserting into `wp_cta_ce_logs`.
   * Logs older than 30 days are automatically purged daily to prevent database bloat.
 * **Data Portability**: Clean JSON export and import for plugin settings, provider preferences, and prompt templates.
+

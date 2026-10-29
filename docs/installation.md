@@ -105,3 +105,4 @@ When a new version is released:
 * **Uninstallation (`uninstall.php`)**:
   * By default, uninstalling the plugin preserves your custom database tables and options so you never lose data accidentally.
   * If you wish to completely wipe all plugin data upon uninstallation, navigate to **Content Engine** -> **Settings** and enable **"Delete all data on uninstall"** before deleting the plugin.
+

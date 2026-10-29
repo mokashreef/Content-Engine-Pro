@@ -63,3 +63,4 @@ Before publishing any future release, the following checklist must be completed:
 - [ ] **Package Integrity**: Production ZIP built via `bin/package-plugin.php` excludes `.git`, `tests/`, `licensing-server/`, and documentation drafts.
 - [ ] **Documentation Sync**: All modified or new features are documented in `README.md` and `docs/`.
 - [ ] **Purchase & Download Links**: Official store links point accurately to `https://code-elta6ur.net/shop/content-engine-pro`.
+

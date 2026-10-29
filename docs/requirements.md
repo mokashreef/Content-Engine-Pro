@@ -70,3 +70,4 @@ Your web server must be permitted to establish outbound HTTPS connections on **P
 
 * **Configuration & Licensing**: Requires the WordPress `manage_options` capability (Administrators).
 * **Manual Article Generation**: Accessible to Administrators and Editors with `edit_posts` permissions.
+

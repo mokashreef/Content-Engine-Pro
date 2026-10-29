@@ -48,3 +48,4 @@ When submitting documentation or allowable code patches:
 * Follow standard WordPress Coding Standards (WPCS).
 * Ensure all Markdown conforms to standard GitHub Flavored Markdown (GFM).
 * Validate all relative markdown links against existing repository files.
+
