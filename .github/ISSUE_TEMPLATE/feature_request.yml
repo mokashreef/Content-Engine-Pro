@@ -1,0 +1,42 @@
+name: "Feature Request"
+description: "Suggest an idea, enhancement, or new workflow for Content Engine Pro."
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We evaluate feature requests based on publishing utility, hosting efficiency, and WordPress standard compliance.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem or Publishing Challenge"
+      description: "Is your feature request related to a specific challenge or limitation in your workflow?"
+      placeholder: "I am always frustrated when trying to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "Describe the solution or workflow you would like to see implemented."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternative Approaches Considered"
+      description: "Describe any alternative solutions or workarounds you have considered."
+    validations:
+      required: false
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Practical Impact"
+      description: "How would this benefit WordPress publishers, agencies, or educators using Content Engine Pro?"
+    validations:
+      required: false
