@@ -1,0 +1,27 @@
+Content Engine Pro — Commercial Software License & Proprietary Notice
+Copyright (c) 2026 Mohammad Abu Khashreef / Code Elta6ur. All rights reserved.
+
+Publisher: Code Elta6ur (https://code-elta6ur.net/)
+Official Purchase Page: https://code-elta6ur.net/shop/content-engine-pro
+
+Content Engine Pro is a commercial WordPress product. This repository serves as the official
+public documentation, architectural reference, and issue reporting hub.
+
+1. COMMERCIAL DISTRIBUTION & USAGE:
+   Authentic software packages, commercial license keys (CEPRO-XXXX-XXXX-XXXX-XXXX), official
+   customer support, and production updates are distributed exclusively via the official store
+   at https://code-elta6ur.net/shop/content-engine-pro.
+
+2. PROPRIETARY RIGHTS & TRADEMARKS:
+   Content Engine Pro, Code Elta6ur, associated brand logos, documentation, hosted licensing
+   systems, and commercial services are the exclusive property of Code Elta6ur and its author.
+   The presence of documentation on GitHub does not grant permission to resell, repackage, or
+   redistribute the commercial product.
+
+3. WORDPRESS ECOSYSTEM INTEROPERABILITY:
+   Where required for compatibility with the WordPress platform, PHP code interacting directly
+   with WordPress core APIs respects GNU General Public License (GPL) v2 or later obligations
+   as stated in the plugin header. All proprietary branding, services, and commercial assets
+   remain governed by Code Elta6ur commercial terms.
+
+For complete details, please see PROPRIETARY-NOTICE.md and docs/licensing-and-usage.md.
