@@ -1,0 +1,41 @@
+# Content Engine Pro - Repository Safety & Ignore Configuration
+# Publisher: Code Elta6ur (https://code-elta6ur.net/)
+
+# Commercial Distribution Packages & ZIP Archives (DO NOT COMMIT)
+*.zip
+code-elta6ur-content-engine.zip
+dist/
+
+# Proprietary Licensing Server Backend (Private Server-Side Code)
+licensing-server/
+
+# Scratch & Temporary Testing Scripts
+scratch/
+*.log
+temp_db.*
+*.sqlite
+test_licensing.*
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+credentials.json
+
+# IDE & Editor Artifacts
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
