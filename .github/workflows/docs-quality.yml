@@ -1,0 +1,59 @@
+name: Documentation & Quality CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-docs:
+    name: Documentation Integrity & Structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify Core Documentation Files
+        run: |
+          echo "Checking presence of essential documentation files..."
+          for file in README.md README.ar.md PROPRIETARY-NOTICE.md SECURITY.md CONTRIBUTING.md CODE_OF_CONDUCT.md CHANGELOG.md; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+          echo "All core documentation files present."
+
+      - name: Verify Documentation Directory Structure
+        run: |
+          echo "Checking docs/ directory suite..."
+          required_docs=(
+            "overview.md"
+            "features.md"
+            "editions.md"
+            "requirements.md"
+            "installation.md"
+            "getting-started.md"
+            "user-guide.md"
+            "configuration.md"
+            "integrations.md"
+            "workflows.md"
+            "troubleshooting.md"
+            "security-and-privacy.md"
+            "licensing-and-usage.md"
+            "faq.md"
+            "roadmap.md"
+            "support.md"
+            "development-notes.md"
+          )
+          for doc in "${required_docs[@]}"; do
+            if [ ! -f "docs/$doc" ]; then
+              echo "Missing documentation file: docs/$doc"
+              exit 1
+            fi
+          done
+          echo "All 17 docs/ suite files present and accounted for."
