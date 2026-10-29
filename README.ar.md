@@ -7,6 +7,8 @@
 [![PHP](https://img.shields.io/badge/PHP-8.1--8.2+-purple.svg)](docs/requirements.md)
 [![License](https://img.shields.io/badge/الترخيص-تجاري%20%2F%20Code%20Elta6ur-red.svg)](PROPRIETARY-NOTICE.md)
 [![Tests](https://img.shields.io/badge/فحوصات%20الجودة-328%20ناجح-brightgreen.svg)](docs/development-notes.md)
+[![Issues](https://img.shields.io/github/issues/mokashreef/Content-Engine-Pro.svg?color=brightgreen)](https://github.com/mokashreef/Content-Engine-Pro/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/mokashreef/Content-Engine-Pro.svg?color=blue)](https://github.com/mokashreef/Content-Engine-Pro/pulls)
 [![اللغة](https://img.shields.io/badge/اللغة-عربي%20أصيل%20RTL-success.svg)](README.ar.md)
 
 **الصفحة الرسمية وشراء الترخيص**: [https://code-elta6ur.net/shop/content-engine-pro](https://code-elta6ur.net/shop/content-engine-pro)  
@@ -27,6 +29,8 @@
 - [التنصيب والتشغيل لأول مرة](#التنصيب-والتشغيل-لأول-مرة)
 - [المتطلبات والتوافق البرمجي](#المتطلبات-والتوافق-البرمجي)
 - [دليل التوثيق الشامل](#دليل-التوثيق-الشامل)
+- [البلاغات وتتبع المشكلات (Issues)](#البلاغات-وتتبع-المشكلات-issues)
+- [طلبات الدمج والمساهمة (Pull Requests)](#طلبات-الدمج-والمساهمة-pull-requests)
 - [الشراء والاشتراك التجاري](#الشراء-والاشتراك-التجاري)
 - [بيان الملكية وحقوق الاستخدام](#بيان-الملكية-وحقوق-الاستخدام)
 
@@ -186,6 +190,28 @@
 
 ---
 
+## البلاغات وتتبع المشكلات (Issues)
+
+نعتمد نظام GitHub Issues كقناة رسمية عامة لتتبع بلاغات الأخطاء، واقتراحات التحسين، ومناقشات المطورين:
+
+* 📋 [**استعراض كافة البلاغات (View All Issues)**](https://github.com/mokashreef/Content-Engine-Pro/issues): تصفح سجل المشكلات المفتوحة والمناقشات الفنية الجارية.
+* 🐛 [**تقديم بلاغ عن مشكلة برمجية (Submit Bug Report)**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=bug_report.yml): تعبئة نموذج البلاغ المنظم مع تحديد إصدار ووردبريس ومزود الـ AI وسجلات النظام بعد حجب المفاتيح.
+* 💡 [**اقتراح ميزة أو تحسين جديد (Feature Request)**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=feature_request.yml): تقديم فكرة جديدة تفيد ناشري ومطوري ووردبريس.
+* 🔒 **الدعم الفني والفوترة الخاصة**: لأي استفسارات تتعلق بمفاتيح التراخيص، أو نقل النطاقات، أو الفوترة، تواصل مباشرة عبر [support@code-elta6ur.net](mailto:support@code-elta6ur.net).
+
+---
+
+## طلبات الدمج والمساهمة (Pull Requests)
+
+نرحب بالمساهمات المجتمعية في تدقيق وتطوير التوثيق، وتحسين الترجمة العربية، وتصحيح الأخطاء المعتمدة:
+
+* 🔀 [**استعراض طلبات الدمج (View Pull Requests)**](https://github.com/mokashreef/Content-Engine-Pro/pulls): متابعة التحسينات والمساهمات قيد المراجعة.
+* 🚀 [**إنشاء طلب دمج جديد (Open a Pull Request)**](https://github.com/mokashreef/Content-Engine-Pro/compare): إرسال تحسيناتك البرمجية أو التوثيقية الموجهة للفرع الرئيسي `main`.
+* 📖 [**دليل المساهمة (Contributing Guidelines)**](CONTRIBUTING.md): مراجعة ضوابط المساهمة ومعايير الأمان قبل إرسال طلب الدمج.
+* 🛡️ [**ميثاق السلوك (Code of Conduct)**](CODE_OF_CONDUCT.md): معايير التعامل المهني والاحترام المتبادل داخل مجتمع المشروع.
+
+---
+
 ## الشراء والاشتراك التجاري
 
 أطلق العنان لقوة الأتمتة التحريرية الكاملة في موقعك مع **Content Engine Pro**:
@@ -212,4 +238,3 @@
 يلتزم الكود المصدري البرمجي الذي يتعامل مباشرة مع واجهات برمجة ووردبريس بمتطلبات رخصة جنو العمومية (GPLv2 or later) للتوافق التام مع بيئة ووردبريس. وتظل العلامات التجارية، والخدمات السحابية لخادم التراخيص، والتحديثات الرسمية، والدعم الفني المباشر خاضعة للشروط التجارية لشركة Code Elta6ur.
 
 للتفاصيل الكاملة، يرجى مراجعة [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) و [docs/licensing-and-usage.md](docs/licensing-and-usage.md).
-

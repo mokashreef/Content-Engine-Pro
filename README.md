@@ -7,6 +7,8 @@
 [![PHP](https://img.shields.io/badge/PHP-8.1--8.2+-purple.svg)](docs/requirements.md)
 [![License](https://img.shields.io/badge/License-Proprietary%20%2F%20Commercial-red.svg)](PROPRIETARY-NOTICE.md)
 [![Tests](https://img.shields.io/badge/QA%20Tests-328%20Passed-brightgreen.svg)](docs/development-notes.md)
+[![Issues](https://img.shields.io/github/issues/mokashreef/Content-Engine-Pro.svg?color=brightgreen)](https://github.com/mokashreef/Content-Engine-Pro/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/mokashreef/Content-Engine-Pro.svg?color=blue)](https://github.com/mokashreef/Content-Engine-Pro/pulls)
 [![Bilingual](https://img.shields.io/badge/Documentation-English%20%7C%20العربية-success.svg)](#-النسخة-العربية---arabic-version)
 
 **Official Product Page & Purchase**: [https://code-elta6ur.net/shop/content-engine-pro](https://code-elta6ur.net/shop/content-engine-pro)  
@@ -30,6 +32,8 @@
 - [Installation & First Use](#installation--first-use)
 - [Requirements & Compatibility](#requirements--compatibility)
 - [Documentation Index](#documentation-index)
+- [Issues & Bug Tracking](#issues--bug-tracking)
+- [Pull Requests & Contributions](#pull-requests--contributions)
 - [Screenshot & Asset Checklist](#screenshot--asset-checklist)
 - [Commercial Call to Action](#commercial-call-to-action)
 - [License & Proprietary Notice](#license--proprietary-notice)
@@ -231,6 +235,28 @@ Explore our comprehensive technical documentation:
 
 ---
 
+## Issues & Bug Tracking
+
+We track all public software bugs, environment-specific issues, and community feature proposals directly on GitHub:
+
+* 📋 [**Browse All Issues**](https://github.com/mokashreef/Content-Engine-Pro/issues): Search active discussions, known issues, and planned investigations.
+* 🐛 [**Submit a Bug Report**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=bug_report.yml): Report a reproducible error using our structured form (gathers WordPress/PHP versions, active provider, and redacted logs).
+* 💡 [**Request a Feature**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=feature_request.yml): Suggest a new editorial workflow, AI integration, or architecture improvement.
+* 🔒 **Private Support & Billing**: For commercial license key resets, order support, or private site debugging, please contact [support@code-elta6ur.net](mailto:support@code-elta6ur.net) directly.
+
+---
+
+## Pull Requests & Contributions
+
+Community contributions to documentation, translation accuracy, and verified bug fixes are welcome:
+
+* 🔀 [**Browse Pull Requests**](https://github.com/mokashreef/Content-Engine-Pro/pulls): Review active community contributions and documentation patches.
+* 🚀 [**Open a Pull Request**](https://github.com/mokashreef/Content-Engine-Pro/compare): Propose improvements targeting the `main` branch.
+* 📖 [**Contributing Guidelines**](CONTRIBUTING.md): Please review our quality standards and commercial code policies before submitting code or documentation changes.
+* 🛡️ [**Code of Conduct**](CODE_OF_CONDUCT.md): Our pledge to maintain a welcoming, professional collaboration environment.
+
+---
+
 ## Screenshot & Asset Checklist
 
 To preserve confidentiality and maintain high presentation standards, screenshots must be captured from a clean, staging WordPress installation without exposing private API keys or personal site details.
@@ -292,6 +318,8 @@ For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [d
 [![PHP](https://img.shields.io/badge/PHP-8.1--8.2+-purple.svg)](docs/requirements.md)
 [![License](https://img.shields.io/badge/الترخيص-تجاري%20%2F%20Code%20Elta6ur-red.svg)](PROPRIETARY-NOTICE.md)
 [![Tests](https://img.shields.io/badge/فحوصات%20الجودة-328%20ناجح-brightgreen.svg)](docs/development-notes.md)
+[![Issues](https://img.shields.io/github/issues/mokashreef/Content-Engine-Pro.svg?color=brightgreen)](https://github.com/mokashreef/Content-Engine-Pro/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/mokashreef/Content-Engine-Pro.svg?color=blue)](https://github.com/mokashreef/Content-Engine-Pro/pulls)
 [![اللغة](https://img.shields.io/badge/اللغة-عربي%20أصيل%20RTL-success.svg)](README.ar.md)
 
 **الصفحة الرسمية وشراء الترخيص**: [https://code-elta6ur.net/shop/content-engine-pro](https://code-elta6ur.net/shop/content-engine-pro)  
@@ -311,6 +339,8 @@ For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [d
 - [التنصيب والتشغيل لأول مرة](#التنصيب-والتشغيل-لأول-مرة-1)
 - [المتطلبات والتوافق البرمجي](#المتطلبات-والتوافق-البرمجي-1)
 - [دليل التوثيق الشامل](#دليل-التوثيق-الشامل-1)
+- [البلاغات وتتبع المشكلات (Issues)](#البلاغات-وتتبع-المشكلات-issues)
+- [طلبات الدمج والمساهمة (Pull Requests)](#طلبات-الدمج-والمساهمة-pull-requests)
 - [الشراء والاشتراك التجاري](#الشراء-والاشتراك-التجاري-1)
 - [بيان الملكية وحقوق الاستخدام](#بيان-الملكية-وحقوق-الاستخدام-1)
 
@@ -467,6 +497,28 @@ For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [d
 | [**خارطة الطريق (Roadmap)**](docs/roadmap.md) | التطويرات المستقبلية وآلية تقييم طلبات الميزات. |
 | [**الدعم الفني والتشخيص (Support)**](docs/support.md) | قنوات الدعم المعتمدة وقواعد الخصوصية وجمع التشخيصات. |
 | [**ملاحظات المطورين (Development Notes)**](docs/development-notes.md) | أنماط التصميم ومنظومة الاختبارات الآلية (328 فحصاً). |
+
+---
+
+## البلاغات وتتبع المشكلات (Issues)
+
+نعتمد نظام GitHub Issues كقناة رسمية عامة لتتبع بلاغات الأخطاء، واقتراحات التحسين، ومناقشات المطورين:
+
+* 📋 [**استعراض كافة البلاغات (View All Issues)**](https://github.com/mokashreef/Content-Engine-Pro/issues): تصفح سجل المشكلات المفتوحة والمناقشات الفنية الجارية.
+* 🐛 [**تقديم بلاغ عن مشكلة برمجية (Submit Bug Report)**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=bug_report.yml): تعبئة نموذج البلاغ المنظم مع تحديد إصدار ووردبريس ومزود الـ AI وسجلات النظام بعد حجب المفاتيح.
+* 💡 [**اقتراح ميزة أو تحسين جديد (Feature Request)**](https://github.com/mokashreef/Content-Engine-Pro/issues/new?template=feature_request.yml): تقديم فكرة جديدة تفيد ناشري ومطوري ووردبريس.
+* 🔒 **الدعم الفني والفوترة الخاصة**: لأي استفسارات تتعلق بمفاتيح التراخيص، أو نقل النطاقات، أو الفوترة، تواصل مباشرة عبر [support@code-elta6ur.net](mailto:support@code-elta6ur.net).
+
+---
+
+## طلبات الدمج والمساهمة (Pull Requests)
+
+نرحب بالمساهمات المجتمعية في تدقيق وتطوير التوثيق، وتحسين الترجمة العربية، وتصحيح الأخطاء المعتمدة:
+
+* 🔀 [**استعراض طلبات الدمج (View Pull Requests)**](https://github.com/mokashreef/Content-Engine-Pro/pulls): متابعة التحسينات والمساهمات قيد المراجعة.
+* 🚀 [**إنشاء طلب دمج جديد (Open a Pull Request)**](https://github.com/mokashreef/Content-Engine-Pro/compare): إرسال تحسيناتك البرمجية أو التوثيقية الموجهة للفرع الرئيسي `main`.
+* 📖 [**دليل المساهمة (Contributing Guidelines)**](CONTRIBUTING.md): مراجعة ضوابط المساهمة ومعايير الأمان قبل إرسال طلب الدمج.
+* 🛡️ [**ميثاق السلوك (Code of Conduct)**](CODE_OF_CONDUCT.md): معايير التعامل المهني والاحترام المتبادل داخل مجتمع المشروع.
 
 ---
 
