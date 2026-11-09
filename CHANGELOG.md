@@ -8,6 +8,34 @@ Official Product Page: [https://code-elta6ur.net/shop/content-engine-pro](https:
 
 ---
 
+## [2.0.1] — 2026-11-09
+
+### Maintenance, Stability & Automation Fixes
+This patch release resolves critical production workflow issues in the automated queue scheduler, sequential long-form generator, and recurring schedule topic management.
+
+### Added
+* **Schedule Topic Bank**: Added `topics` column in `wp_cta_ce_schedules` table with automatic database migration. Users can now define an ordered bank of specific article titles and topics (one per line) for recurring rules. The engine pops topics sequentially on each scheduled run.
+* **On-Demand Queue Batch Execution ("Run Batch Now")**: Added a header action button in the Queue Manager and corresponding AJAX handler (`cta_ce_run_queue_batch`) allowing administrators to process pending queue items immediately without waiting for WP-Cron.
+* **Direct Add to Queue from Generator**: Added "Add to Queue" (`cta_ce_queue_single_article`) button in the manual generator view so users can queue articles for background generation without running them synchronously in the browser.
+* **WP-Cron Auto-Healing**: Added an initialization check in `CTA_CE_Core::init()` that verifies `cta_ce_minutely_event` on every admin request and automatically reschedules it if missing from WordPress cron.
+* **Real-Time Queue Item Execution**: Added immediate execution mode (`run_now: 1`) when clicking "Retry" or "Start Now" on queue items, complete with an interactive loading spinner and real-time user notification upon completion.
+
+### Fixed
+* **Queue Item Premature Failure ("Tried and Failed")**: Fixed a critical bug in `CTA_CE_DB::retry_queue_item()` where retried items retained their previous attempt counter (`attempts = 3`). Retries now reset `attempts = 0` and clear previous error messages so items receive a fresh execution cycle.
+* **Unresponsive Queue Action Buttons**: Fixed queue action handler so clicking "Restart" or "Start Now" actively triggers item execution via AJAX instead of merely resetting status to pending.
+* **Generic "Scheduled Article" Titles**: Fixed `CTA_CE_Cron` generating dummy placeholder titles (`"مقال مجدول تلقائياً: ..."`); the scheduler now draws real topics from the rule's topic bank, or automatically synthesizes a high-value title based on the assigned category.
+* **Generator Disconnecting Midway**: Fixed browser connection drops and HTTP 500/WAF errors during sequential multi-section generation by:
+  * Stripping redundant HTML from `prior_sections` payload, passing only lightweight `{ title, summary }` objects (95% payload reduction).
+  * Adding a 1.5-second pacing delay between section generation requests to respect LLM rate limits (TPM/RPM).
+  * Implementing `postAjaxWithRetry` in `admin-generator.js` with automatic 3-second backoff retry on HTTP 429 rate limit errors.
+  * Raising PHP script execution time limits to 180 seconds for section generation and assembly.
+* **Schedule Time Parsing & Formatting Inaccuracies**: Fixed `CTA_CE_Cron` silently failing on single-digit or non-padded time strings (e.g., `9:00`, `10:00 AM`, `2:30 pm`) via a new `normalize_time_slot()` utility.
+* **Accurate Next Run Calculation**: Added automatic calculation and storage of `next_run` UTC timestamps upon schedule creation and after each execution, displaying upcoming run dates in the schedules table.
+* **Concurrency Lock Stalling**: Reduced cron transient lock duration from 10 minutes to 2 minutes (`MINUTE_IN_SECONDS * 2`) to prevent prolonged queue lockouts after unexpected server disruptions.
+* **Admin Script Localization**: Localized `ctaCeData` across all admin scripts (`cta-ce-calendar-js`, `cta-ce-providers-js`, `cta-ce-queue-js`, `cta-ce-series-js`) ensuring reliable access to nonces and AJAX URLs on all plugin screens.
+
+---
+
 ## [2.0.0] — 2026-09-30
 
 ### Commercial Production Release

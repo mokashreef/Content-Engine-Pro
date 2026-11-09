@@ -36,6 +36,14 @@ This guide outlines common diagnostic scenarios, error codes, and safe resolutio
 
 ---
 
+### Symptom: Generation Disconnects Midway During Long Articles
+* **Symptoms**: The generator starts writing, generates one or two sections, and then halts or shows a red error state.
+* **Cause 1: Web Application Firewall (WAF) or `max_input_vars` Exceeded**: In earlier versions, passing the complete HTML of prior sections in AJAX payloads triggered hosting request size limits. Content Engine Pro v2.0.1+ passes only concise `{ title, summary }` context objects, resolving payload bloat.
+* **Cause 2: AI Provider Rate Limiting (HTTP 429)**: Generating consecutive sections with zero delay exhausts tokens-per-minute (TPM) on providers like Groq or Gemini. The generator now incorporates a 1.5-second pacing delay and automatic retry with 3-second backoff.
+* **Cause 3: Server Execution Timeout**: PHP terminated the request before the LLM finished responding. In v2.0.1+, AJAX handlers raise execution limits via `@set_time_limit(180)`.
+
+---
+
 ### Symptom: Free Tier Cap Reached (`FREE_LIMIT_REACHED`)
 * **Message**: *"لقد وصلت إلى الحد الأقصى للخطة المجانية (6/6 مقالات لهذا الشهر)."*
 * **Cause**: You have successfully generated 6 articles this calendar month on the Free Plan.
@@ -69,8 +77,31 @@ This guide outlines common diagnostic scenarios, error codes, and safe resolutio
 ### Symptom: Task Stuck in "Processing" Status
 * **Cause**: A PHP process crashed or timed out before updating the database row.
 * **Resolution**:
-  * The queue manager automatically releases concurrency locks after 5 minutes.
-  * You can manually click **Run Now** or **Retry** next to any job in **Content Engine** -> **Task Queue**.
+  * The queue manager automatically releases concurrency locks after 2 minutes (reduced from 10 minutes in v2.0.1).
+  * You can manually click **Run Now** or **Retry** next to any job in **Content Engine** -> **Task Queue**, or click **Run Batch Now** to process all pending items immediately.
+
+---
+
+### Symptom: Queue Item Fails Immediately with "حاول وفشل" (Retry / Failed)
+* **Cause**: In previous versions, clicking "Restart" reset the job status to `pending` but did not reset the attempt counter (`attempts = 3`), causing the job to fail immediately on its next execution check.
+* **Resolution in v2.0.1+**: Retrying an item automatically resets `attempts = 0`, clears previous error messages, and triggers immediate background execution with real-time feedback.
+
+---
+
+### Symptom: Scheduled Articles Generate with Generic Titles ("مقال مجدول تلقائياً")
+* **Cause**: The recurring schedule had no specific article titles defined, causing earlier versions to fall back to a generic title string.
+* **Resolution in v2.0.1+**:
+  1. Open **Content Engine** -> **Schedules**.
+  2. Edit your schedule and fill in the **Topic Bank** textarea with your target article titles (one title per line).
+  3. The scheduler will sequentially extract the first topic on each scheduled run, publish the article, and retain remaining topics.
+  4. If left blank, the engine now generates a rich, category-aligned topic (e.g., "Comprehensive Guide to [Category]") rather than a placeholder string.
+
+---
+
+### Symptom: Schedule Not Firing at Configured Post Time
+* **Cause 1: Non-Standard Time Formatting**: Earlier versions required strict `HH:MM` syntax. Versions 2.0.1+ use `normalize_time_slot()` to accept 12-hour, 24-hour, and unpadded inputs (`9:00`, `10:00 AM`, `2:30 pm`).
+* **Cause 2: WP-Cron Inactive or Unscheduled**: In v2.0.1+, `CTA_CE_Core::init()` includes a self-healing check that automatically reschedules `cta_ce_minutely_event` if missing.
+* **Cause 3: Missing Page Visits on Shared Hosting**: If using default WP-Cron, trigger a run manually via the **Run Batch Now** button in **Content Engine** -> **Task Queue**, or configure a server cron job.
 
 ---
 

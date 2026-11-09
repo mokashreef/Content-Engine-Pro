@@ -109,10 +109,12 @@ The scheduling architecture protects web server performance through asynchronous
 
 * **Dedicated Database Tables**:
   * `wp_cta_ce_queue`: Individual generation and outline jobs with state payloads, attempt counters, and error tracking.
-  * `wp_cta_ce_schedules`: Recurring automation rules with defined days of the week, times, categories, and target lengths.
-* **Minutely Worker (`cta_ce_every_minute`)**: Runs every 60 seconds via WP-Cron, protected by a 5-minute transient lock (`cta_ce_cron_running`) to prevent concurrent process collisions.
+  * `wp_cta_ce_schedules`: Recurring automation rules with defined days of the week, times, categories, target lengths, and a dedicated **Topic Bank** (`topics`) for sequential article publication.
+* **Topic Bank Architecture**: Store pre-planned lists of article titles and keywords directly inside each recurring rule. On every scheduled interval, the engine automatically pops the next topic in line, writes the article, and persists the remaining topics for future runs.
+* **On-Demand Queue Batch Execution**: Administrators can click **Run Batch Now** in the Queue Manager to process all pending items immediately via AJAX without waiting for the next WP-Cron cycle.
+* **Minutely Worker (`cta_ce_every_minute`) with Self-Healing**: Runs every 60 seconds via WP-Cron, protected by a 2-minute transient lock (`cta_ce_cron_running`) to prevent concurrent process collisions. The core engine automatically verifies and re-registers the cron event if missing.
 * **Shared-Hosting Batch Protection**: Processes a limited batch (default: 2 jobs per minute, maximum: 5) to keep memory usage and CPU execution times well below hosting thresholds.
-* **Exponential Retry Backoff**: When an API error or server timeout occurs, the job transitions to `retry` status and reschedules itself across three configurable delays (default: 5 minutes, 15 minutes, 30 minutes). After 3 failed attempts, it gracefully marks the job as `failed` with a descriptive error message without crashing PHP.
+* **Exponential Retry Backoff & Instant Restart**: When an API error occurs, jobs transition to `retry` status across three configurable delays (5m, 15m, 30m). Clicking "Restart" resets attempts to 0 and executes the task immediately with real-time feedback.
 * **Publishing Calendar**: An interactive monthly calendar view displays pending, scheduled, and completed articles with quick-access links.
 
 ---
