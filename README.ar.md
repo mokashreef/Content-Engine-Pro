@@ -2,11 +2,11 @@
 
 **المحرك الذكي المتكامل والأول من نوعه داخل ووردبريس لأتمتة صناعة وهيكلة وجدولة ونشر المقالات والسلاسل التعليمية بالذكاء الاصطناعي**
 
-[![Version](https://img.shields.io/badge/الإصدار-2.0.3-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/الإصدار-2.0.4-blue.svg)](CHANGELOG.md)
 [![WordPress](https://img.shields.io/badge/ووردبريس-6.0--6.7-blue.svg)](docs/requirements.md)
 [![PHP](https://img.shields.io/badge/PHP-8.1--8.2+-purple.svg)](docs/requirements.md)
 [![License](https://img.shields.io/badge/الترخيص-تجاري%20%2F%20Code%20Elta6ur-red.svg)](PROPRIETARY-NOTICE.md)
-[![Tests](https://img.shields.io/badge/فحوصات%20الجودة-337%20ناجح-brightgreen.svg)](docs/development-notes.md)
+[![Tests](https://img.shields.io/badge/فحوصات%20الجودة-341%20ناجح-brightgreen.svg)](docs/development-notes.md)
 [![Issues](https://img.shields.io/github/issues/mokashreef/Content-Engine-Pro.svg?color=brightgreen)](https://github.com/mokashreef/Content-Engine-Pro/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/mokashreef/Content-Engine-Pro.svg?color=blue)](https://github.com/mokashreef/Content-Engine-Pro/pulls)
 [![اللغة](https://img.shields.io/badge/اللغة-عربي%20أصيل%20RTL-success.svg)](README.ar.md)

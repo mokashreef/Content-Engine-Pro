@@ -8,6 +8,21 @@ Official Product Page: [https://code-elta6ur.net/shop/content-engine-pro](https:
 
 ---
 
+## [2.0.4] — 2026-11-10
+
+### Native WordPress Gutenberg Block Preservation Fix
+This update resolves the issue where WordPress stripped `<!-- wp:... -->` Gutenberg block comments during post insertion (`wp_kses_post` and WP-Cron `content_save_pre` filters), causing generated articles to appear in the WordPress editor as raw classic HTML instead of native Gutenberg blocks.
+
+### Fixed
+* **Gutenberg Block Comment Stripping on Save (`CTA_CE_Security::sanitize_gutenberg_content` & `insert_gutenberg_post`)**:
+  * WordPress Core's `wp_kses_post()` and unauthenticated WP-Cron `content_save_pre` KSES filters strip all HTML comments, deleting every `<!-- wp:... -->` and `<!-- /wp:... -->` block delimiter before storing `post_content`.
+  * Implemented `sanitize_gutenberg_content()` to validate Gutenberg block markers and JSON attributes, mask them, run `wp_kses_post()` on inner HTML, and restore block markers cleanly.
+  * Implemented `insert_gutenberg_post()` to assign valid admin authorship during WP-Cron runs and preserve validated Gutenberg blocks through `wp_insert_post()` / `wp_update_post()` across manual generation, queue processing, and history restoration.
+* **Mixed-Block Wrapping (`CTA_CE_Block_Converter::normalize_existing_blocks`)**: Enhanced block normalizer with a block-depth scanner that converts any stray raw HTML fragments outside `<!-- wp:... -->` blocks into official Gutenberg blocks (`wp:paragraph`, `wp:list`, `wp:heading`, etc.), ensuring 100% block coverage across entire posts.
+* **Test Harness Parity**: Updated mock `wp_kses_post()` in `tests/bootstrap.php` to strip HTML comments just like WordPress Core and added 4 empirical test assertions verifying Gutenberg block survival in saved posts.
+
+---
+
 ## [2.0.3] — 2026-11-10
 
 ### HTML Link & Code Formatting Protection Fix
