@@ -8,6 +8,19 @@ Official Product Page: [https://code-elta6ur.net/shop/content-engine-pro](https:
 
 ---
 
+## [2.0.3] — 2026-11-10
+
+### HTML Link & Code Formatting Protection Fix
+This release fixes a critical HTML corruption bug where multiple `target="_blank"` hyperlinks on the same line were broken into raw text by Markdown underscore parsing.
+
+### Fixed
+* **Multiple `target="_blank"` Link Corruption (`CTA_CE_Block_Converter`)**: Fixed a regex conflict in `clean_artifacts()` where Markdown italic conversion (`_..._`) matched across the underscores of consecutive `target="_blank"` attributes on the same line (producing invalid `target="<em>blank"` tags that broke WordPress `wp_targeted_link_rel()` and `wp_kses_post()`). All `<pre>`, `<code>`, HTML comments, existing HTML tags/attributes, converted Markdown links, and bare URLs are now protected via deterministic placeholder masking prior to inline Markdown transformation, and underscore italics enforce strict Unicode word boundaries.
+* **DOM Serialization & Entity Preservation**: Removed destructive `html_entity_decode()` in `get_inner_html()` and `get_outer_html()`, keeping UTF-8 Arabic characters, `&amp;` query parameters, and `&lt;...&gt;` code snippets intact without unescaping into live HTML.
+* **Trailing Period Placement & Unclosed `<a>` Balancing**: Added `'a'` to `close_open_html_tags()` and guarded `repair_trailing_sentence()` against appending stray periods outside closing Gutenberg block comments (`<!-- /wp:... -->`).
+* **Internal Linking Tag Guard (`CTA_CE_Internal_Links::inject_links`)**: Masked `<code ...>...</code>` and HTML tag attributes (e.g., `alt`, `title`) inside paragraphs prior to phrase matching so internal links are never injected inside existing attributes.
+
+---
+
 ## [2.0.2] — 2026-11-10
 
 ### Stale Processing Recovery, Checkpoint Continuation & Queue UI/Provider Hardening
