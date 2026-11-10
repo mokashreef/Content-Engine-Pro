@@ -23,17 +23,18 @@ Used for generating individual, high-depth articles on demand through the admin 
            │
            ▼
 [ Stage 2: Sequential Section Generation ]
-   ├── Loop through each section in outline
+   ├── Loop through each section in outline (1.5s–2.0s LLM rate pacing)
    ├── Supply section title + target section word count
-   ├── Inject 1-sentence summary of previous sections (Context Memory)
-   └── Store completed section HTML in payload
+   ├── Pass lightweight `{ title, summary }` context (avoids WAF/`max_input_vars` drops)
+   ├── Auto-retry HTTP 429 / timeouts on frontend (`postAjaxWithRetry`, 3s backoff)
+   └── Store completed section Gutenberg blocks in payload
            │
            ▼
-[ Stage 3: Local PHP Assembly ]
-   ├── Combine sections natively in PHP
-   ├── Ensure H2/H3 heading hierarchy
-   ├── Convert to valid Gutenberg blocks
-   └── Inject contextual internal links into paragraphs
+[ Stage 3: Local PHP Assembly & Link Safety ]
+   ├── Combine sections natively in PHP (0 AI tokens consumed)
+   ├── Normalize H2/H3 hierarchy and wrap loose HTML in native Gutenberg blocks
+   ├── Protect `<pre>`, `<code>`, `<a target="_blank">` via placeholder masking
+   └── Inject contextual internal links safely outside attributes and `<code>`
            │
            ▼
 [ Stage 4: SEO & Quality Control ]
@@ -42,8 +43,9 @@ Used for generating individual, high-depth articles on demand through the admin 
    └── Validate word count tolerance & heading validity
            │
            ▼
-[ Stage 5: WordPress Persistence ]
-   ├── Insert post into `wp_posts` (Default: `draft`)
+[ Stage 5: Safe Gutenberg WordPress Persistence ]
+   ├── Validate & mask `<!-- wp:... -->` delimiters (`CTA_CE_Security::sanitize_gutenberg_content`)
+   ├── Sanitize inner HTML via `wp_kses_post()` and insert post via `insert_gutenberg_post()`
    ├── Save meta to Yoast / Rank Math / AIOSEO or native meta
    ├── Save revision snapshot in `wp_cta_ce_history`
    └── Increment monthly generation counter (if on Free tier)
@@ -56,30 +58,35 @@ Used for generating individual, high-depth articles on demand through the admin 
 Enables hands-free, recurring publication on a pre-defined schedule:
 
 ```
-[ Admin Schedule Definition ]
-   ├── Days of week (e.g., Mon, Wed, Fri)
-   ├── Times of day (e.g., 10:00, 16:00)
-   ├── Target WordPress Category
+[ Admin Schedule Definition (`wp_cta_ce_schedules`) ]
+   ├── Days of week (e.g., Sat–Fri checkboxes)
+   ├── Flexible Publishing Times (normalized via `normalize_time_slot()`, e.g., `9:00`, `10:00 AM`, `18:00`)
+   ├── Sequential Topic Bank (`topics` textarea, one article title per line)
+   ├── Target WordPress Category (fallback contextual topic if bank empty)
+   ├── Calculated Next Run (`next_run` stored in UTC, rendered in WP timezone)
    └── Target Word Count & Language
            │
            ▼
-[ Minutely WP-Cron Worker (`cta_ce_minutely_event`) ]
+[ Minutely WP-Cron Worker (`cta_ce_minutely_event` with `init` Self-Healing) ]
    │
-   ├── Acquire 5-Minute Transient Lock (`cta_ce_cron_running`)
-   │      (Prevents concurrent worker overlap)
+   ├── Acquire 2-Minute Transient Lock (`cta_ce_cron_running`)
+   │      (Prevents concurrent worker overlap without prolonged deadlocks)
    │
-   ├── Verify License Permission (`CTA_CE_License::can('automation')`)
+   ├── Auto-Recover Stale `processing` Jobs (`recover_stale_processing_items(4)`)
+   │      (Rescues crashed shared-host jobs > 4 minutes old back to `retry`)
    │
-   ├── Check Recurring Schedules (`wp_cta_ce_schedules`)
-   │      └── If current time matches slot & not previously run:
-   │             └── Insert new task into `wp_cta_ce_queue` (Status: `pending`)
+   ├── Check Recurring Schedules (`CTA_CE_License::can('automation')`)
+   │      └── If current local slot is due (6h lookback) & `last_run < slot_ts`:
+   │             ├── Pop top topic from `topics` bank (or synthesize category topic)
+   │             ├── Persist remaining `topics` + recalculate `next_run`
+   │             └── Enqueue new `single` task into `wp_cta_ce_queue`
    │
-   ├── Fetch Pending Queue Batch (Default: 2 items per run)
+   ├── Fetch Pending Queue Batch (with 40s Shared-Host Time Budget)
    │
-   ├── Execute Generation with Provider Lock
-   │      └── Increment attempts counter (`attempts + 1`)
+   ├── Execute Generation with Provider Lock & Incremental Section Checkpoints
    │
-   ├── Insert Completed Post as Draft / Published
+   ├── Insert Completed Post via `CTA_CE_Security::insert_gutenberg_post()`
+   │      (Assigns admin author & preserves `<!-- wp:... -->` blocks in Cron)
    │
    ├── Update Task Status (`completed`)
    │
@@ -156,7 +163,39 @@ Protects the publishing pipeline against network dropouts and rate limits:
 
 ---
 
-## 5. Commercial License Transfer Workflow
+## 5. Shared-Host Time-Budget Checkpointing & Stale Recovery Workflow (v2.0.2+)
+
+Shared WordPress hosting environments (such as LiteSpeed / Hostinger) often enforce 60–120 second PHP execution ceilings. Content Engine Pro prevents mid-article process kills and frozen `"processing"` jobs through two coordinated mechanisms:
+
+```
+[ Section Loop Inside `CTA_CE_Queue_Manager::process_article_generation()` ]
+           │
+           ├── Save each completed section immediately into `payload['completed_sections']`
+           │
+           ├── Before starting next uncompleted section:
+           │      └── Check elapsed runtime: `(microtime(true) - $start_time) >= 40s`?
+           │             │
+           │             ├── YES (and >= 1 section completed):
+           │             │     ├── Keep `completed_sections` persisted in DB
+           │             │     ├── Reset `status = 'pending'`, restore `attempts` (zero penalty)
+           │             │     ├── Schedule `wp_schedule_single_event(time() + 3, 'cta_ce_minutely_event')`
+           │             │     └── Return `continue: true` to Queue Manager AJAX (auto-chains next step)
+           │             │
+           │             └── NO: Generate next section normally (with 2.0s rate pacing)
+           │
+[ Fallback Safety Net: If Host Kills PHP Unexpectedly Mid-Request ]
+           │
+           ▼
+[ Next Queue Load / Cron Tick / Batch Trigger ]
+   └── Calls `CTA_CE_DB::recover_stale_processing_items(4)`
+          ├── Finds `status = 'processing'` with `updated_at <= UTC_NOW - 4 minutes`
+          ├── Preserves all saved `completed_sections`
+          └── Moves `attempts < max` -> `retry` (or `failed` if exhausted)
+```
+
+---
+
+## 6. Commercial License Transfer Workflow
 
 Permits customers to move their single-site commercial license between domains:
 

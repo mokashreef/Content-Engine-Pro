@@ -87,10 +87,12 @@ Automate continuous content publishing without manual intervention:
   * **Schedule Name**: Descriptive label for the rule.
   * **Target Category**: Standard WordPress category where generated posts will be assigned.
   * **Days of the Week**: Multi-select check boxes (Saturday through Friday).
-  * **Publishing Times**: Comma-separated 24-hour time slots (e.g., `08:00, 14:00, 20:00`).
+  * **Publishing Times**: Comma-separated time slots automatically normalized via `normalize_time_slot()` (supports `10:00`, `9:00`, `10:00 AM`, `2:30 pm`).
+  * **Topic Bank (`topics`)**: Optional multi-line list of planned article titles (one topic per line). On every scheduled run, the engine pops the top topic cleanly and saves remaining topics back to the rule. If empty, the engine synthesizes a contextual title aligned with the chosen category.
   * **Target Word Count**: Desired length for articles created under this schedule.
   * **Content Type & Language**: Default editorial presets.
-* **Execution Logic**: The minutely WP-Cron worker monitors your site's local timezone. When a scheduled time slot arrives, the engine enqueues an article job in `wp_cta_ce_queue`.
+* **Schedules Table Visibility**: Displays **Remaining Topics** badges and calculated **Next Run** (`next_run`) dates converted to your WordPress timezone.
+* **Execution Logic**: The minutely WP-Cron worker monitors your site's local timezone (with automatic `init` self-healing if unscheduled). When a scheduled time slot arrives, the engine enqueues an article job in `wp_cta_ce_queue`.
 
 ---
 
@@ -111,20 +113,23 @@ A visual monthly editorial calendar:
 
 Inspect and manage background jobs currently executing or scheduled:
 
+* **Header & Filter Controls**:
+  * **Run Batch Now (`cta_ce_run_queue_batch`)**: Processes pending and recovered items sequentially one-by-one via AJAX (`admin-queue.js`), chaining across steps to prevent server 504 gateway timeouts.
+  * **Status Filter Tabs**: Quickly switch between **All**, **Pending**, **Processing**, **Retry**, **Completed**, and **Failed** counts.
+  * **Automatic Stale Recovery**: Opening the queue view automatically recovers any `processing` tasks inactive for over 4 minutes back into the retry queue while preserving completed sections.
 * **Queue Columns**:
   * **ID**: Unique database task identifier.
-  * **Task Type**: `single`, `series_lesson`, or `outline`.
-  * **Title**: Target topic.
+  * **Task / Title**: Target topic with a **Section Progress Badge** (`تقدم الأقسام: X / Y`) whenever intermediate sections have been saved, plus direct editor links upon completion.
+  * **Task Type**: Localized editorial labels for `single` (مقال فردي), `series_lesson` (درس سلسلة), or `outline` (مخطط).
   * **Status**: `pending`, `processing`, `retry`, `completed`, or `failed`.
   * **Attempts**: Current attempt vs. maximum attempts (default: 3).
-  * **Locked Provider**: Provider bound to the job to ensure stylistic consistency.
-  * **Scheduled Time**: Localized execution timestamp.
-  * **Error Message**: Diagnostic details if a previous attempt failed.
+  * **Locked Provider**: Provider bound to the job for stylistic consistency.
+  * **Scheduled Time**: Localized WordPress timezone execution timestamp.
+  * **Error Message**: Concise failure diagnostic with an expandable **Details ("التفاصيل")** toggle to inspect long error messages in full.
 * **Queue Actions**:
-  * **Run Now**: Manually trigger immediate execution of a pending or retry job.
-  * **Retry Job**: Reset an exhausted failed job back to pending.
+  * **Start (`بدء`)**: Immediately starts a `pending` task via AJAX with real-time checkpoint continuation.
+  * **Restart / Resume (`إعادة بدء` / `استئناف`)**: Available on `failed`, `retry`, and stalled `processing` jobs. Resets `attempts = 0`, clears error state, preserves saved sections, and immediately resumes execution.
   * **Delete**: Remove a job from the queue.
-  * **Purge Completed**: Clean all successfully finished tasks.
 
 ---
 
