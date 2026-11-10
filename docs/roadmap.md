@@ -6,9 +6,20 @@ Official Product Page: [https://code-elta6ur.net/shop/content-engine-pro](https:
 
 ---
 
-## 1. Verified Architecture in Progress
+## 1. Delivered Reliability Milestones (`v2.0.1` – `v2.0.4`)
 
-The following features reflect underlying code structures already prepared in version 2.0.0:
+Recent maintenance and architectural updates delivered prior to feature expansion include:
+
+* **Queue Resiliency & Stale Recovery**: Time-budgeted 40-second checkpoint continuation across sequential article sections, automatic recovery of stuck processing items (`recover_stale_processing_items(4)`), single-item retry fixes, and 2-minute transient locks.
+* **Schedule Precision & Topic Bank**: Strict `normalize_time_slot()` alignment, explicit `next_run` tracking, and ordered Topic Bank dequeuing to replace generic placeholder titles.
+* **AI Provider Hardening**: Gemini `thought`-part filtering, explicit `finishReason` surfacing, 90-second default timeout, 6-second single-provider 429 backoff, and locked-provider re-selection when disabled.
+* **Native Gutenberg Block Integrity**: Mixed-HTML depth normalization (`normalize_existing_blocks()`), tag/URL/code token masking (`clean_artifacts()`), trailing fragment repair, and Gutenberg comment-safe persistence (`sanitize_gutenberg_content()` / `insert_gutenberg_post()`).
+
+---
+
+## 2. Verified Architecture in Progress (`v2.1+`)
+
+The following features reflect underlying code structures already prepared in version 2.0.4:
 
 ### A. Automated AI Featured Image Generation
 * **Current State**: Setting toggle `enable_image_generation` exists in `cta_ce_general_settings`, currently disabled to ensure production stability.
