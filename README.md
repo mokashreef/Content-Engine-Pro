@@ -98,10 +98,17 @@ Interacting directly with conversational chatbot web interfaces solves only a fr
 
 ### 6. Asynchronous Background Queue & WP-Cron Scheduling
 * **Dedicated Database Tables**: Manages queue execution (`wp_cta_ce_queue`) and recurring rules (`wp_cta_ce_schedules`) with `dbDelta` schema migration support.
-* **Minutely Cron Execution**: Asynchronous worker running every 60 seconds with 5-minute transient concurrency locks to prevent overlapping executions.
+* **Minutely Cron Execution**: Asynchronous worker running every 60 seconds with 2-minute transient concurrency locks, 40-second time-budget checkpointing, and automatic 4-minute stale processing recovery.
 * **Exponential Backoff**: Three-tier retry engine (5m, 15m, 30m) handles transient network dropouts gracefully without crashing PHP.
 * **Shared Hosting Protection**: Configurable batch limit (default: 2 jobs per minute, maximum: 5) ensures low CPU and memory footprints.
 * *Detailed Documentation*: [docs/features.md](docs/features.md#6-asynchronous-background-queue--wp-cron-scheduling)
+
+### Latest Release Highlights (`v2.0.4`)
+* **Native Gutenberg Block Integrity**: Fixed WordPress `wp_kses_post()` stripping of `<!-- wp:... -->` block comment delimiters via `CTA_CE_Security::sanitize_gutenberg_content()` and `CTA_CE_Security::insert_gutenberg_post()`, plus mixed-HTML depth normalization (`normalize_existing_blocks()`) so posts render as native WordPress blocks.
+* **Checkpoint Continuation & Stale Recovery**: Long-form sequential generation persists completed sections incrementally under a 40-second time budget and auto-recovers stalled `processing` jobs after 4 minutes.
+* **Topic Bank & Schedule Accuracy**: Recurring schedules enforce exact `next_run` alignment via `normalize_time_slot()` and pop queued topics from a dedicated Topic Bank before falling back cleanly.
+* **Link & Artifact Hardening**: Placeholder token masking in `CTA_CE_Block_Converter` and `CTA_CE_Internal_Links` preserves attributes, URLs, and code spans, while QA passes **341 / 341 checks**.
+* *Full Changelog & Downloads*: [CHANGELOG.md](CHANGELOG.md) · [GitHub Releases](https://github.com/mokashreef/Content-Engine-Pro/releases) · [Official Store](https://code-elta6ur.net/shop/content-engine-pro)
 
 ---
 
@@ -115,7 +122,7 @@ Interacting directly with conversational chatbot web interfaces solves only a fr
            │
            ▼
 [ Provider Manager & Fallback Engine ] ─── Locks Provider per Job
-   ├── Google Gemini (gemini-1.5-flash)
+   ├── Google Gemini (gemini-2.0-flash / gemini-2.5-flash)
    ├── Groq Cloud (llama-3.3-70b-versatile)
    ├── OpenRouter (meta-llama/llama-3.3-70b-instruct:free)
    ├── Mistral AI (mistral-small-latest)
@@ -403,10 +410,17 @@ For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [d
 
 ### 6. طابور مهام مرن وجدولة WP-Cron منضبطة
 * **جداول قاعدة بيانات مخصصة**: إدارة الطابور (`wp_cta_ce_queue`) وقواعد الجدولة (`wp_cta_ce_schedules`) مع توافق `dbDelta`.
-* **جدولة دقيقة بالخلفية**: حدث cron يعمل كل 60 ثانية مع قفل مؤقت (5 دقائق) لمنع تضارب العمليات.
+* **جدولة دقيقة بالخلفية**: حدث cron يعمل كل 60 ثانية مع قفل مؤقت (دقيقتان)، وحفظ مرحلي للأقسام ضمن ميزانية زمنية 40 ثانية، واستعادة تلقائية للمهام العالقة في `processing` بعد 4 دقائق.
 * **إعادة المحاولة التراكمية (Exponential Backoff)**: إعادة المحاولة تلقائياً بعد 5 دقائق، ثم 15 دقيقة، ثم 30 دقيقة عند حدوث أي خطأ شبكي دون إيقاف الخادم.
 * **حماية الاستضافات المشتركة**: معالجة مضبوطة بالدفعات (افتراضياً: مهمتان في الدقيقة، بحد أقصى 5) لضمان عدم تجاوز الذاكرة أو المعالج.
 * *التوثيق المفصل*: [docs/features.md](docs/features.md#6-asynchronous-background-queue--wp-cron-scheduling)
+
+### أبرز تحديثات الإصدار الأخير (`v2.0.4`)
+* **سلامة مكونات جوتنبرج الأصلية**: إصلاح حذف ووردبريس لعلامات `<!-- wp:... -->` عبر `CTA_CE_Security::sanitize_gutenberg_content()` و `CTA_CE_Security::insert_gutenberg_post()` مع تطبيع HTML المختلط (`normalize_existing_blocks()`).
+* **الاستئناف المرحلي واستعادة المهام العالقة**: حفظ الأقسام المكتملة مرحلياً ضمن حد 40 ثانية واستعادة المهام العالقة بعد 4 دقائق تلقائياً مع زر **استئناف (Resume)** وإصلاح **إعادة بدء**.
+* **بنك المواضيع ودقة الجدولة**: ضبط مواعيد التشغيل عبر `normalize_time_slot()` وسحب العناوين بالترتيب من **بنك المواضيع (Topic Bank)**.
+* **حماية الروابط والأكواد واختبارات QA**: استخدام أقنعة التوكن المؤقتة في `CTA_CE_Block_Converter` و `CTA_CE_Internal_Links` لمنع تشويه الروابط مع اجتياز **341 فحصاً آلياً (0 أخطاء)**.
+* *سجل التغييرات والشراء الرسمي*: [CHANGELOG.md](CHANGELOG.md) · [الإصدارات (Releases)](https://github.com/mokashreef/Content-Engine-Pro/releases) · [المتجر الرسمي](https://code-elta6ur.net/shop/content-engine-pro)
 
 ---
 
@@ -496,7 +510,7 @@ For complete terms, review [PROPRIETARY-NOTICE.md](PROPRIETARY-NOTICE.md) and [d
 | [**الأسئلة الشائعة (FAQ)**](docs/faq.md) | إجابات وافية عن الأسئلة التقنية والتجارية المتكررة. |
 | [**خارطة الطريق (Roadmap)**](docs/roadmap.md) | التطويرات المستقبلية وآلية تقييم طلبات الميزات. |
 | [**الدعم الفني والتشخيص (Support)**](docs/support.md) | قنوات الدعم المعتمدة وقواعد الخصوصية وجمع التشخيصات. |
-| [**ملاحظات المطورين (Development Notes)**](docs/development-notes.md) | أنماط التصميم ومنظومة الاختبارات الآلية (328 فحصاً). |
+| [**ملاحظات المطورين (Development Notes)**](docs/development-notes.md) | أنماط التصميم ومنظومة الاختبارات الآلية (341 فحصاً). |
 
 ---
 
