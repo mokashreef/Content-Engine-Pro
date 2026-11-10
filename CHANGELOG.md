@@ -8,6 +8,30 @@ Official Product Page: [https://code-elta6ur.net/shop/content-engine-pro](https:
 
 ---
 
+## [2.0.2] — 2026-11-10
+
+### Stale Processing Recovery, Checkpoint Continuation & Queue UI/Provider Hardening
+This update resolves frozen `"قيد المعالجة"` (Processing) queue jobs caused by shared-hosting execution limits, introduces step-by-step checkpoint continuation, improves Gemini compatibility, and fixes Queue Manager table/UI layout bugs.
+
+### Added
+* **Automatic Stale Processing Recovery (`CTA_CE_DB::recover_stale_processing_items`)**: Detects queue jobs stuck in `processing` status for over 4 minutes due to server/LiteSpeed timeouts or crashes, automatically recovering them to `retry` (or `failed` if max attempts reached) while preserving all previously saved `completed_sections`.
+* **Time-Budgeted Checkpoint Continuation**: Background cron and Queue Manager AJAX actions now enforce a 40-second PHP execution budget between sections on live servers. Long multi-section articles pause gracefully after saving completed sections and resume seamlessly via automatic frontend AJAX chaining or immediate follow-up cron events without burning retry attempts.
+* **Manual Resume Button for Processing Rows**: Added an explicit **Resume ("استئناف")** action button directly on `processing` items in the Queue Manager so administrators can rescue any stalled task in one click.
+* **Expandable Full Error Inspection & Section Progress Badges**: Queue rows now display section generation progress (`X / Y`) and an expandable full error viewer (`التفاصيل`) instead of truncating long API diagnostic errors.
+
+### Fixed
+* **Queue Manager Table & Filter Bar CSS Layout**:
+  * Styled `.cta-ce-filter-tabs`, `.cta-ce-tab-link`, `.cta-ce-action-group`, `.cta-ce-info-alert`, `.cta-ce-btn-secondary`, dashboard timeline/feature lists, and audit log filter controls.
+  * Removed destructive global `word-break: break-word` inside `.cta-ce-table td` and applied `.cta-ce-table-wrapper` + `.cta-ce-nowrap` across all admin tables (`queue`, `schedules`, `articles`, `logs`, `usage`, `series`, `dashboard`), fixing cramped character-by-character wrapping on IDs, provider names, dates, and status badges.
+  * Fixed CSS selector collision between `.cta-ce-stat-icon.cta-ce-stat-info` and `.cta-ce-stat-info` containers.
+  * Fixed mismatched container closing tags in `articles.php` and `dashboard.php` and incorrect field focus ID in `series.php`.
+* **Gemini Model Parsing & API Timeout Resiliency**:
+  * Updated Google Gemini provider to skip internal `thought` response parts on thinking models, report `finishReason` / `blockReason` diagnostics when responses are empty, and set `gemini-2.0-flash` as default fallback model.
+  * Standardized default API timeout to 90 seconds across cloud providers (`gemini`, `groq`, `openrouter`, `mistral`, `cerebras`), increased chunk pacing to 2.0s and single-provider HTTP 429 backoff to 6s on live servers, and cast `completed_sections` indexes strictly to `int` to eliminate duplicate section runs.
+* **Version Header & Asset Cache Busting**: Synchronized plugin header version and asset version constant (`2.0.2`) with `readme.txt` to clear browser and optimization plugin (e.g., 10Web Booster) asset caches cleanly.
+
+---
+
 ## [2.0.1] — 2026-11-09
 
 ### Maintenance, Stability & Automation Fixes

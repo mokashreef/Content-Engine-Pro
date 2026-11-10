@@ -75,10 +75,11 @@ This guide outlines common diagnostic scenarios, error codes, and safe resolutio
 ---
 
 ### Symptom: Task Stuck in "Processing" Status
-* **Cause**: A PHP process crashed or timed out before updating the database row.
-* **Resolution**:
-  * The queue manager automatically releases concurrency locks after 2 minutes (reduced from 10 minutes in v2.0.1).
-  * You can manually click **Run Now** or **Retry** next to any job in **Content Engine** -> **Task Queue**, or click **Run Batch Now** to process all pending items immediately.
+* **Cause**: On shared hosting (e.g., LiteSpeed/Hostinger), long multi-section articles or crashed PHP workers can hit server execution time limits before updating the database row.
+* **Resolution in v2.0.2+**:
+  * **Automatic Stale Recovery**: Any job left in `processing` status without an update for more than 4 minutes is automatically recovered (`recover_stale_processing_items`) back to `retry` (preserving all previously saved sections).
+  * **Graceful 40s Checkpoint Continuation**: Long articles pause cleanly after ~40 seconds between sections and automatically resume via AJAX chaining or background cron without losing completed work or triggering 504 timeouts.
+  * **One-Click Manual Resume**: You can click **Resume ("استئناف")** directly next to any `processing` job in **Content Engine** -> **Task Queue**, or click **Run Batch Now** to process pending/recovered items sequentially.
 
 ---
 
