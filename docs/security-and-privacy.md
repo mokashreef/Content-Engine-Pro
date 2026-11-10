@@ -31,11 +31,11 @@ Below is an exhaustive, auditable inventory of all outbound network transmission
   * `domain`: Normalized domain name (e.g., `example.com`).
   * `site_url`: WordPress site URL (`home_url()`).
   * `site_uuid`: Randomly generated, anonymous installation UUID (`cta_ce_install_uuid`).
-  * `version`: Installed plugin version string (e.g., `2.0.0`).
+  * `version`: Installed plugin version string (e.g., `2.0.4`).
 * **Authentication**: Signed via HMAC-SHA256 (`X-CTA-Signature`) using the installation UUID as secret.
 * **Frequency**:
   * On-demand upon license activation or deactivation.
-  * Automated background synchronization throttled to once every 7 days via WP-Cron.
+  * Automated background synchronization throttled to once every 3 days via WP-Cron (`cta_ce_license_weekly_sync` transient).
 
 ---
 
@@ -48,10 +48,16 @@ Content Engine Pro follows established WordPress security standards:
   * Administrative controls (settings, provider keys, license management, logs, import/export) strictly require the `manage_options` capability.
   * Article creation is restricted to users with at least `edit_posts` permissions.
 * **SQL Injection Prevention**: All queries against custom tables (`wp_cta_ce_queue`, `wp_cta_ce_schedules`, `wp_cta_ce_logs`, `wp_cta_ce_history`) utilize `$wpdb->prepare()` with parameterized type specifiers (`%d`, `%s`).
-* **Cross-Site Scripting (XSS) Sanitization**:
+* **Cross-Site Scripting (XSS) & Gutenberg Block Integrity (`CTA_CE_Security::sanitize_gutenberg_content`)**:
   * Admin outputs are escaped using `esc_html()`, `esc_attr()`, and `esc_url()`.
-  * Generated article HTML is sanitized via `wp_kses_post()` before database insertion.
+  * WordPress Core's standard `wp_kses_post()` and unauthenticated WP-Cron `wp_filter_post_kses` hooks strip all HTML comments—including official `<!-- wp:... -->` Gutenberg block markers.
+  * To reconcile strict XSS defense with native Gutenberg output, `sanitize_gutenberg_content()` validates every block delimiter's tag name and JSON attribute object (re-encoding attributes with `JSON_HEX_TAG | JSON_HEX_AMP`), masks validated block markers, runs full `wp_kses_post()` across all inner HTML, and strips arbitrary non-block HTML comments before restoring the validated block markers.
+  * `CTA_CE_Security::insert_gutenberg_post()` safely persists sanitized block posts through `wp_insert_post()` / `wp_update_post()` (even during unauthenticated WP-Cron execution) while assigning a valid administrator `post_author`.
   * Structured JSON-LD FAQ schemas are encoded with `JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT` to prevent script breakouts.
+* **Attribute, Link & Code Block Masking (`CTA_CE_Block_Converter`, `CTA_CE_Internal_Links`)**:
+  * Prior to Markdown normalization, `<pre>`, `<code>`, existing HTML tags/attributes (such as multiple `target="_blank"` anchors on the same line), Gutenberg comments, converted Markdown links, and bare URLs are isolated via deterministic token placeholders so formatting regexes cannot mutate HTML attributes or snake-case identifiers.
+  * DOM serialization preserves UTF-8 Arabic text and escaped code snippets (`&lt;...&gt;`, `&amp;`) without unescaping into executable markup.
+  * `CTA_CE_Internal_Links::inject_links()` isolates existing tags and `<code>` nodes inside paragraphs before phrase matching so internal links are never injected inside attributes like `alt` or `title`.
 * **Automatic Secret Scrubbing in Logs**:
   * The logging service (`CTA_CE_Security::sanitize_log_message`) strips Bearer tokens, API keys, and authorization query strings before writing entries to `wp_cta_ce_logs`.
   * Logs older than 30 days are automatically purged daily to prevent disk and database bloat.
