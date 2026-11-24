@@ -32,9 +32,13 @@ The following features reflect underlying code structures already prepared in ve
 ### C. Enhanced Multi-Site & Network Management
 * **Objective**: Streamlined management for WordPress Multisite (WPMU) installations, allowing network administrators to manage API provider priorities globally across sub-sites.
 
+### D. Multi-LLM Provider Fallback Orchestration & Automated Health Pings
+* **Current State**: Implemented in `CTA_CE_Provider_Manager::generate_with_fallback()`, featuring dynamic priority sorting, job-level provider locking, single-provider 429 rate-limit backoff (6s), and structured event logging via `CTA_CE_DB::add_log()`.
+* **Objective**: Complete end-to-end multi-provider failover sequence (Primary Provider -> Secondary Standby Provider -> Minutely WP-Cron Exponential Backoff Queue) with automated health check pings before multi-chunk dispatching, preserving cumulative token usage telemetry across provider switches and standardizing system prompts across OpenAI, Anthropic, Gemini, Groq, Mistral, Cerebras, and Ollama endpoints.
+
 ---
 
-## 2. Feature Request Evaluation Process
+## 3. Feature Request Evaluation Process
 
 As a commercial product, Content Engine Pro evolves based on verified feedback from active publishers, agencies, and site operators:
 

@@ -49,7 +49,15 @@ Content Engine Pro connects directly from your WordPress server to external infe
    * Protocol: Standard OpenAI-compatible format over local HTTP/HTTPS (default timeout: 120 seconds).
    * Features: Completely private, offline-capable generation without third-party API dependencies or fees.
 
-> **Failover & Rate-Limit Pacing (v2.0.2+)**: `CTA_CE_Provider_Manager::generate_with_fallback()` switches immediately to the next configured provider on HTTP 429 or connection failure. When only a single provider is active on live WordPress servers, it pauses for a 6-second backoff retry before failing gracefully.
+> ### Multi-LLM Provider Failover & Orchestration Engine (v2.0.2+)
+> `CTA_CE_Provider_Manager::generate_with_fallback()` coordinates high-reliability generation across inference providers:
+> 1. **Automated Health Check & Discovery**: Prior to dispatching multi-chunk requests, provider endpoints verify network connectivity and valid authentication credentials.
+> 2. **Three-Tier Failover Pipeline**:
+>    - **Primary Active Provider**: Dispatches initial section generation request.
+>    - **Secondary Standby Provider**: If the primary provider responds with HTTP 429 (rate-limited), HTTP 5xx (outage), or connection timeout, execution transfers immediately to the next configured provider in `cta_ce_provider_priority`.
+>    - **Exponential Backoff Queue**: If all configured providers are exhausted or a single provider is active, requests pause with a 6-second transient backoff before rescheduling via WP-Cron with exponential delays (5m, 15m, 30m).
+> 3. **Telemetry & Token Preservation**: Cumulative input/output token usage is tracked continuously and logged to `wp_cta_ce_logs` across provider transitions.
+> 4. **Unified Cross-Model System Prompts**: Standardizes formatting instructions and JSON response schema parameters across Google Gemini, OpenAI, Anthropic, Groq, Mistral, Cerebras, and Ollama endpoints.
 
 ---
 
